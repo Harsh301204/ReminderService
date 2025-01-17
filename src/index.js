@@ -3,17 +3,19 @@ const { PORT } = require('./config/serverConfig')
 const bodyParser = require('body-parser')
 
 const jobs = require('./utils/jobs')
+const { createChannel } = require('./utils/messageQueue')
 
 const TicketController = require('./controllers/ticket-controller')
 
 const { sendBasicEmail } = require('./services/emailService')
 
-const setupAndStartServer = ()=> {
+const setupAndStartServer = async ()=> {
     const app = express();
     app.use(bodyParser.json())
     app.use(bodyParser.urlencoded({extended : true}))
 
     app.post('/api/v1/tickets' , TicketController.create)
+    const channel = await createChannel()
 
     app.listen(PORT , () => {
         console.log(`Server Started on Port ${PORT}`)
