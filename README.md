@@ -21,3 +21,6 @@ notificationTime:date
 ```
 npx sequelize db:migrate
 ```
+- created a jobs file in utils folder 
+- will write some cron jobs logic to send notifications 
+- now will write a function to fetch pending emails in our service layer and call that with our cron we setted
