@@ -3,7 +3,7 @@ const TicketRepository = require('../repository/ticketRepo')
 
 const repo = new TicketRepository()
 
-const sendBasicEmail = (Mailfrom, Mailto, Mailsubject, mailBody) => {
+const sendBasicEmail =  (Mailfrom, Mailto, Mailsubject, mailBody) => {
     try {
         sender.sendMail({
             from: Mailfrom,
@@ -20,16 +20,16 @@ const sendBasicEmail = (Mailfrom, Mailto, Mailsubject, mailBody) => {
 const fetchPendingEmails = async (timeStamp) => {
     try {
 
-        const response = await repo.get({status : 'Pending'});
+        const response = await repo.get({ status: 'Pending' });
         return response
     } catch (error) {
         console.log(error)
     }
 }
 
-const updateStatus = async (ticketId , data) => {
+const updateStatus = async (ticketId, data) => {
     try {
-        const response = await repo.update(ticketId , data);
+        const response = await repo.update(ticketId, data);
         return response
     } catch (error) {
         console.log(error)
@@ -46,9 +46,27 @@ const createNotification = async (data) => {
     }
 }
 
+const subscribeEvents = async (payload) => {
+        let service = payload.service
+        let data = payload.data
+        switch (service) {
+            case 'CREATE_TICKET':
+                await createNotification(data)
+                break;
+            case 'SEND_BASIC_MAIL':
+                  sendBasicEmail(data)
+                break;
+            default:
+                console.log("No Valid Request Recieved")
+                break;
+        }
+    
+}
+
 module.exports = {
     sendBasicEmail,
     fetchPendingEmails,
     createNotification,
-    updateStatus
+    updateStatus,
+    subscribeEvents
 }

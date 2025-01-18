@@ -3,11 +3,15 @@ const { PORT } = require('./config/serverConfig')
 const bodyParser = require('body-parser')
 
 const jobs = require('./utils/jobs')
-const { createChannel } = require('./utils/messageQueue')
+// const { createChannel } = require('./utils/messageQueue')
 
 const TicketController = require('./controllers/ticket-controller')
 
-const { sendBasicEmail } = require('./services/emailService')
+const { sendBasicEmail , testingQueue } = require('./services/emailService')
+const emailService = require('./services/emailService')
+
+const { subscribeMessage , createChannel } = require('./utils/messageQueue')
+const {REMINDER_BINDING_KEY  } = require('./config/serverConfig')
 
 const setupAndStartServer = async ()=> {
     const app = express();
@@ -16,6 +20,8 @@ const setupAndStartServer = async ()=> {
 
     app.post('/api/v1/tickets' , TicketController.create)
     const channel = await createChannel()
+
+    subscribeMessage(channel , emailService.subscribeEvents,  REMINDER_BINDING_KEY )
 
     app.listen(PORT , () => {
         console.log(`Server Started on Port ${PORT}`)
@@ -28,7 +34,7 @@ const setupAndStartServer = async ()=> {
         //     cron.schedule('*/2 * * * *', () => {
         //     console.log('running a task every two minutes');
         //   });
-        jobs()
+        // jobs()
     })
 
 }
