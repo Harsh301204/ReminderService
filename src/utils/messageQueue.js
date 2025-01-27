@@ -31,6 +31,7 @@ const subscribeMessage = async (channel, service, binding_key) => {
 
         })
     } catch (error) {
+        console.log("Error insuscribemessage ",error);
         throw error
     }
 
