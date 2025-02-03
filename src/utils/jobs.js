@@ -27,10 +27,12 @@ const setUpJobs = ()=> {
                         console.log(data)
                         await emailService.updateStatus(email.id , {status : "Success"})
                     }
+                    console.log(response)
                 });
             })
-            console.log(response)
+            
       })
+        
     }
 
 module.exports = setUpJobs

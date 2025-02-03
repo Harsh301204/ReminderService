@@ -26,7 +26,6 @@ const subscribeMessage = async (channel, service, binding_key) => {
             const payload = JSON.parse(msg.content.toString())
             service(payload)
           
-            // service(msg.content.toString())
             channel.ack(msg)
 
         })

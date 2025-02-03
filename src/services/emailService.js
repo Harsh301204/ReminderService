@@ -3,15 +3,17 @@ const TicketRepository = require('../repository/ticketRepo')
 
 const repo = new TicketRepository()
 
-const sendBasicEmail =  (Mailfrom, Mailto, Mailsubject, mailBody) => {
+const sendBasicEmail =  async (Mailfrom, Mailto, Mailsubject, mailBody) => {
     try {
-        sender.sendMail({
+       const response = await  sender.sendMail({
             from: Mailfrom,
             to: Mailto,
             subject: Mailsubject,
             text: mailBody
 
         })
+
+        console.log(response)
     } catch (error) {
         console.log(error)
     }
@@ -24,7 +26,7 @@ const fetchPendingEmails = async (timeStamp) => {
         return response
     } catch (error) {
         console.log(error)
-    }
+    } 
 }
 
 const updateStatus = async (ticketId, data) => {

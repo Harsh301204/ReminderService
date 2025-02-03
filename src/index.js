@@ -5,6 +5,8 @@ const bodyParser = require('body-parser')
 const jobs = require('./utils/jobs')
 // const { createChannel } = require('./utils/messageQueue')
 
+const cron = require('node-cron')
+
 const TicketController = require('./controllers/ticket-controller')
 
 const { sendBasicEmail , testingQueue } = require('./services/emailService')
@@ -22,21 +24,22 @@ const setupAndStartServer = async ()=> {
     const channel = await createChannel()
 
     subscribeMessage(channel , emailService.subscribeEvents,  REMINDER_BINDING_KEY )
+   
 
     app.listen(PORT , () => {
         console.log(`Server Started on Port ${PORT}`)
         // sendBasicEmail(
         //     'support@admin.com',
-        //     'ghost04704@gmail.com',
+        //     'piyush.2023ug1113@iiitranchi.ac.in',
         //     'This is testing',
         //     'Trying to test my email service basic part'
         // )
-        //     cron.schedule('*/2 * * * *', () => {
+        //     cron.schedule('* * * * *', () => {
         //     console.log('running a task every two minutes');
         //   });
-        // jobs()
+        jobs()
     })
 
 }
 
-setupAndStartServer()
+setupAndStartServer() 
